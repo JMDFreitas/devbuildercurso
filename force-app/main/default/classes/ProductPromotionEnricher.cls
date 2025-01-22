@@ -12,13 +12,15 @@ public class ProductPromotionEnricher {
 
         for (Product2 product : products) {
 
-            promotionsToUpdate.add(new Promotion__c(
-                Id = product.Promotion__c
-                , KitPromotionalProduct__c = product.Id
-            ));
+            promotionsToUpdate.add(buildPromotion(product));
         }
-        System.debug(LoggingLevel.DEBUG, 'promotionsToUpdate: ' + promotionsToUpdate);
-        return repository.save(promotionsToUpdate);
 
+        return repository.save(promotionsToUpdate);
+    }
+
+    private Promotion__c buildPromotion(Product2 product) {
+        return new PromotionBuilder().withId(product.Promotion__c)
+                                    .withProductId(product.Id)
+                                    .build();
     }
 }

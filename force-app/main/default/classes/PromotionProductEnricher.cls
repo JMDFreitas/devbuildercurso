@@ -12,12 +12,18 @@ public class PromotionProductEnricher {
 
         for (Promotion__c promotion : promotionsActived) {
 
-            Product2 product = new Product2(Name ='Product teste', ProductCode ='003003003', Promotion__c = promotion.Id);
-            productstoInsert.add(product);
-
+            productstoInsert.add(buildProduct(promotion));
         }
 
         return repository.save(productstoInsert);
 
+    }
+
+    private product2 buildProduct(Promotion__c promotion) {
+
+        return new ProductBuilder().withName('Product Kit promotion')
+                                    .withProductCode('003003003')
+                                    .withPromotionId(promotion.Id)
+                                    .build(); 
     }
 }
