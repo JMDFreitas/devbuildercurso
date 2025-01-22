@@ -24,6 +24,6 @@ public class PromotionProductEnricher {
         return new ProductBuilder().withName('Product Kit promotion')
                                     .withProductCode('003003003')
                                     .withPromotionId(promotion.Id)
-                                    .build(); 
+                                    .build();
     }
 }
