@@ -20,7 +20,7 @@ public class ProductPromotionEnricher {
 
     private Promotion__c buildPromotion(Product2 product) {
         return new PromotionBuilder().withId(product.Promotion__c)
-                                    .withProductId(product.Id)
-                                    .build();
+                                        .withProductId(product.Id)
+                                        .build();
     }
 }

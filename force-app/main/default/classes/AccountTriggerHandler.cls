@@ -47,6 +47,11 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
     }
 
     override
+    public void afterUpdate() {
+        enrichAccount();
+    }
+
+    override
     public void beforeUpdate() {
         validate();   
     }
@@ -57,5 +62,14 @@ public with sharing class AccountTriggerHandler extends TriggerHandler {
 
     private void enrichEvent() {
         this.enricher.enrich(this.filter.byValue(newAccounts, 'Category__c', 'Premium'));
+    }
+
+    private void enrichAccount() {
+        
+        List<Account> accountsByStatusAndOriginalAccountsUpdated = this.filter.byChangedFields(this.filter.byNotNull(newAccounts, 'OriginalAccount__c') , oldAccounts, new List<String>{ 'Status__c', 'OriginalAccount__c'});
+        List<Account> accountsActived = this.filter.byChangedValue(accountsByStatusAndOriginalAccountsUpdated, oldAccounts, 'Status__c', 'Ativo');
+        List<Account> accountsTypeCondominio = this.filter.byValue(accountsActived, 'Type', 'Condominio');
+
+        this.enricherAccount.enrich(accountsTypeCondominio);
     }
 }
